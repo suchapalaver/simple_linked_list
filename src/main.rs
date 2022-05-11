@@ -11,11 +11,10 @@ impl Node {
 }
 
 fn to_list(vector: Vec<i32>) -> Option<Box<Node>> {	
-    vector.iter().fold(None, |mut cur, &value| {
+    vector.iter().fold(None, |cur, &value| {
         let mut new_node = Node::new(value);
         new_node.next = cur;
-        cur = Some(Box::new(new_node));
-        cur
+        Some(Box::new(new_node))
     })
 }
 
