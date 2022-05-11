@@ -6,18 +6,17 @@ pub struct Node {
 
 impl Node {
     fn new(val: i32) -> Node {
-	Node{ val, next: None }
+        Node { val, next: None }
     }
 }
 
-fn to_list(vector: Vec<i32>) -> Option<Box<Node>> {
-    let mut cur = None;
-    for &value in vector.iter().rev() {
-	let mut new_node = Node::new(value);
-	new_node.next = cur;
-	cur = Some(Box::new(new_node));
-    }
-    cur
+fn to_list(vector: Vec<i32>) -> Option<Box<Node>> {	
+    vector.iter().fold(None, |mut cur, &value| {
+        let mut new_node = Node::new(value);
+        new_node.next = cur;
+        cur = Some(Box::new(new_node));
+        cur
+    })
 }
 
 fn unbox<Node>(value: Box<Node>) -> Node {
@@ -25,11 +24,13 @@ fn unbox<Node>(value: Box<Node>) -> Node {
 }
 
 fn main() {
-    let _init_node = Node { val: 0, next: Some(Box::new(Node::new(1))) }; 
-    let vector = vec![0, 1, 2, 3]; 
+    let _init_node = Node {
+        val: 0,
+        next: Some(Box::new(Node::new(1))),
+    };
+    let vector = vec![0, 1, 2, 3];
     for node in to_list(vector) {
-	
 	let new_node = unbox(node);
-	println!("node val: {:?} next: {:?}", new_node.val, new_node.next);
+        println!("node val: {:?} next: {:?}", new_node.val, new_node.next);
     }
 }
